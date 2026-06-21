@@ -1,0 +1,13 @@
+Treatment,Provider,City,Price
+Blood Sugar Test,Government Hospital,Mumbai,100
+Blood Sugar Test,Private Lab,Mumbai,250
+Blood Sugar Test,Premium Diagnostic Centre,Mumbai,400
+CBC,Government Hospital,Mumbai,200
+CBC,Private Lab,Mumbai,450
+CBC,Premium Diagnostic Centre,Mumbai,700
+HbA1c,Government Hospital,Mumbai,300
+HbA1c,Private Lab,Mumbai,500
+HbA1c,Premium Diagnostic Centre,Mumbai,900
+Lipid Profile,Government Hospital,Mumbai,400
+Lipid Profile,Private Lab,Mumbai,700
+Lipid Profile,Premium Diagnostic Centre,Mumbai,1200
