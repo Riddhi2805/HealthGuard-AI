@@ -230,7 +230,7 @@ The original research investigated preventive healthcare participation, healthca
 
 ## Live Demo
 
-[Streamlit App Link]
+[Streamlit App Link](https://healthguard-ai-uaewfkm8qytchzjrwy5wwc.streamlit.app/)
 
 The application can also be run locally using:
 
