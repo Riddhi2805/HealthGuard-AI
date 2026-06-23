@@ -161,13 +161,8 @@ Current data storage uses CSV-based persistence for demonstration and educationa
 
 ## Live Demo
 
-<<<<<<< HEAD
 HealthGuard AI is deployed on Streamlit Cloud:
-=======
 [Streamlit App Link](https://healthguard-ai-nmo5tvzdpjqu4e8buj5f8s.streamlit.app/)
->>>>>>> 654fb8ade8dcecd7ed9ef45a3cb8c9c62ea643d9
-
-https://healthguard-ai-nmo5tvzdpjqu4e8buj5f8s.streamlit.app/
 
 ---
 
