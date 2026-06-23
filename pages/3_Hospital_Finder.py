@@ -60,7 +60,7 @@ location = st.text_input(
     placeholder="Airoli, Navi Mumbai"
 )
 st.caption(
-    "Tip: Use area and city together, e.g., Dadar Mumbai, Airoli Navi Mumbai, Thane Mumbai."
+    "Tip: Use area and city together, e.g., Dadar,Mumbai/Airoli Navi,Mumbai/Thane,Mumbai."
 )
 if st.button("Find Hospitals"):
 
