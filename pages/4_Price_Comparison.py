@@ -23,13 +23,25 @@ try:
 except:
     profile_df = pd.DataFrame()
 
+current_email = st.session_state.get(
+    "email"
+)
+
+if current_email and not profile_df.empty:
+
+    profile_df = profile_df[
+        profile_df["Email"]
+        ==
+        current_email
+    ]
+    
 # Sidebar
 
 st.sidebar.title(
     "🏥 HealthGuard AI"
 )
 
-if not profile_df.empty:
+if current_email and not profile_df.empty:
 
     profile = profile_df.iloc[0]
 

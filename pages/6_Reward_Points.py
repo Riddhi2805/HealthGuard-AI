@@ -21,13 +21,25 @@ except:
 
     profile_df = pd.DataFrame()
 
+current_email = st.session_state.get(
+    "email"
+)
+
+if current_email and not profile_df.empty:
+
+    profile_df = profile_df[
+        profile_df["Email"]
+        ==
+        current_email
+    ]
+
 # Sidebar
 
 st.sidebar.title(
     "🏥 HealthGuard AI"
 )
 
-if not profile_df.empty:
+if current_email and not profile_df.empty:
 
     profile = profile_df.iloc[0]
 
@@ -47,7 +59,7 @@ st.sidebar.caption(
     "Empowering Preventive Healthcare Through AI"
 )
 
-if profile_df.empty:
+if not current_email or profile_df.empty:
 
     st.info(
         "🔓 Create a profile to unlock Rewards, Health Tracking, Goals, and Personalized Insights."
@@ -71,11 +83,20 @@ except:
 
     rewards_df = pd.DataFrame(
         columns=[
+            "Email",
             "Date",
             "Activity",
             "Points"
         ]
     )
+
+if current_email and not rewards_df.empty:
+
+    rewards_df = rewards_df[
+        rewards_df["Email"]
+        ==
+        current_email
+    ]
 
 if rewards_df.empty:
 

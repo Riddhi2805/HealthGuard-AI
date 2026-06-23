@@ -16,13 +16,26 @@ try:
     )
 except:
     profile_df = pd.DataFrame()
+
+current_email = st.session_state.get(
+    "email"
+)
+
+if current_email and not profile_df.empty:
+
+    profile_df = profile_df[
+        profile_df["Email"]
+        ==
+        current_email
+    ]
+
 # Sidebar
 
 st.sidebar.title(
     "🏥 HealthGuard AI"
 )
 
-if not profile_df.empty:
+if current_email and not profile_df.empty:
 
     profile = profile_df.iloc[0]
 
@@ -76,10 +89,21 @@ if st.button("Find Hospitals"):
         response = requests.get(
             url,
             params=params,
-            headers=headers
+            headers=headers,
+            timeout=10
         )
 
-        data = response.json()
+        try:
+
+            data = response.json()
+
+        except:
+
+            st.error(
+                "Unable to fetch hospital data. Please try again."
+            )
+
+            st.stop()
 
         if data:
 

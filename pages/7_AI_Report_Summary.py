@@ -15,13 +15,25 @@ except:
 
     profile_df = pd.DataFrame()
 
+current_email = st.session_state.get(
+    "email"
+)
+
+if current_email and not profile_df.empty:
+
+    profile_df = profile_df[
+        profile_df["Email"]
+        ==
+        current_email
+    ]
+
 # Sidebar
 
 st.sidebar.title(
     "🏥 HealthGuard AI"
 )
 
-if not profile_df.empty:
+if current_email and not profile_df.empty:
 
     profile = profile_df.iloc[0]
 
@@ -59,9 +71,19 @@ st.write(
 # GEMINI SETUP
 # ======================================
 
-genai.configure(
-    api_key=st.secrets["GEMINI_API_KEY"]
-)
+try:
+
+    genai.configure(
+        api_key=st.secrets["GEMINI_API_KEY"]
+    )
+
+except:
+
+    st.error(
+        "Gemini API key not configured."
+    )
+
+    st.stop()
 
 model = genai.GenerativeModel(
     "gemini-2.5-flash"
@@ -161,6 +183,14 @@ if uploaded_file:
                 st.error(
                     "Unable to analyze report. Please try again later."
                 )
+                st.stop()
+
+            if not response.text:
+
+                st.error(
+                    "No response generated."
+                )
+
                 st.stop()
 
         st.success(

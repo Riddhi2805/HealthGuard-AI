@@ -28,13 +28,25 @@ except:
 
     profile_df = pd.DataFrame()
 
+current_email = st.session_state.get(
+    "email"
+)
+
+if current_email and not profile_df.empty:
+
+    profile_df = profile_df[
+        profile_df["Email"]
+        ==
+        current_email
+    ]
+
 # Sidebar
 
 st.sidebar.title(
     "🏥 HealthGuard AI"
 )
 
-if not profile_df.empty:
+if current_email and not profile_df.empty:
 
     profile = profile_df.iloc[0]
 
@@ -54,7 +66,7 @@ st.sidebar.caption(
     "Empowering Preventive Healthcare Through AI"
 )
 
-if profile_df.empty:
+if not current_email or profile_df.empty:
 
     st.info(
         "🔓 Create a profile to unlock Health Reminders, Health Tracking, Rewards, and Personalized Health Insights."
@@ -108,6 +120,7 @@ if st.button("➕ Add Reminder"):
 
             reminders_df = pd.DataFrame(
                 columns=[
+                    "Email",
                     "Title",
                     "Category",
                     "Reminder Date",
@@ -118,12 +131,14 @@ if st.button("➕ Add Reminder"):
                 ]
             )
 
+
         days_remaining = (
             reminder_date - date.today()
         ).days
 
         new_reminder = pd.DataFrame(
             [[
+                current_email,
                 title,
                 category,
                 reminder_date,
@@ -133,6 +148,7 @@ if st.button("➕ Add Reminder"):
                 "No"
             ]],
             columns=[
+                "Email",
                 "Title",
                 "Category",
                 "Reminder Date",
@@ -154,6 +170,8 @@ if st.button("➕ Add Reminder"):
             "Reminder added successfully!"
         )
 
+        st.rerun()
+
 
 
 # ==================================================
@@ -174,6 +192,7 @@ except:
 
     reminders_df = pd.DataFrame(
         columns=[
+            "Email",
             "Title",
             "Category",
             "Reminder Date",
@@ -183,11 +202,24 @@ except:
             "Reward Given"
         ]
     )
+
+if current_email and not reminders_df.empty:
+
+    reminders_df = reminders_df[
+        reminders_df["Email"]
+        ==
+        current_email
+    ]
+
 # ----------------------------------------------
 # AUTO EXPIRE AFTER 15 DAYS
 # ----------------------------------------------
 
 today = pd.Timestamp.today().date()
+
+all_reminders = pd.read_csv(
+    REMINDER_FILE
+)
 
 for i in reminders_df.index:
 
@@ -208,7 +240,12 @@ for i in reminders_df.index:
                 "Status"
             ] = "Not Completed"
 
-reminders_df.to_csv(
+            all_reminders.loc[
+                i,
+                "Status"
+            ] = "Not Completed"
+
+all_reminders.to_csv(
     REMINDER_FILE,
     index=False
 )
@@ -250,10 +287,6 @@ else:
             "Days Remaining"
         ] = days_remaining
 
-    reminders_df.to_csv(
-        REMINDER_FILE,
-        index=False
-    )
 
 
     # ----------------------------------------------
@@ -371,7 +404,26 @@ for idx, row in pending_reminders.iterrows():
                 "Reward Given"
             ] = "Yes"
 
-            reminders_df.to_csv(
+            all_reminders = pd.read_csv(
+                REMINDER_FILE
+            )
+
+            all_reminders.loc[
+                idx,
+                "Status"
+            ] = "Completed"
+
+            all_reminders.loc[
+                idx,
+                "Completed Date"
+            ] = str(today)
+
+            all_reminders.loc[
+                idx,
+                "Reward Given"
+            ] = "Yes"
+
+            all_reminders.to_csv(
                 REMINDER_FILE,
                 index=False
             )
@@ -380,11 +432,13 @@ for idx, row in pending_reminders.iterrows():
 
             reward_entry = pd.DataFrame(
                 [[
+                    current_email,
                     str(today),
                     f"{row['Title']} Completed",
                     50
                 ]],
                 columns=[
+                    "Email",
                     "Date",
                     "Activity",
                     "Points"
@@ -402,6 +456,8 @@ for idx, row in pending_reminders.iterrows():
                 "Reminder marked as completed! +50 Points"
             )
 
+            st.rerun()
+
         # ------------------------------------------
         # NOT COMPLETED
         # ------------------------------------------
@@ -415,7 +471,16 @@ for idx, row in pending_reminders.iterrows():
                 "Status"
             ] = "Not Completed"
 
-            reminders_df.to_csv(
+            all_reminders = pd.read_csv(
+                REMINDER_FILE
+            )
+
+            all_reminders.loc[
+                idx,
+                "Status"
+            ] = "Not Completed"
+
+            all_reminders.to_csv(
                 REMINDER_FILE,
                 index=False
             )
@@ -423,6 +488,8 @@ for idx, row in pending_reminders.iterrows():
             st.warning(
                 "Reminder marked as not completed."
             )
+
+            st.rerun()
 
 if not action_found:
 

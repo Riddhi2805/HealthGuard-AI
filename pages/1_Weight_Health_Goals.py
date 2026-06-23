@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
-from datetime import date
-from datetime import *
-
+from datetime import date, datetime, timedelta
 
 # ==================================================
 # PART 1 - BMI CALCULATOR
@@ -14,20 +12,30 @@ st.write(
     "Track your BMI, set health goals, monitor progress, and earn rewards for achieving milestones."
 )
 
-# --------------------------------------------------
-# USER INPUTS
-# --------------------------------------------------
-use_profile = st.checkbox(
-    "Use My Profile Information",
-    value=True
-)
-
 
 PROFILE_FILE = "data/user_profile.csv"
 
-profile_df = pd.read_csv(
-    PROFILE_FILE
+current_email = st.session_state.get(
+    "email"
 )
+
+try:
+
+    profile_df = pd.read_csv(
+        PROFILE_FILE
+    )
+
+except:
+
+    profile_df = pd.DataFrame()
+
+if current_email and not profile_df.empty:
+
+    profile_df = profile_df[
+        profile_df["Email"]
+        ==
+        current_email
+    ]
 
 # Sidebar
 
@@ -35,12 +43,13 @@ st.sidebar.title(
     "🏥 HealthGuard AI"
 )
 
-if not profile_df.empty:
+
+if current_email and not profile_df.empty:
 
     profile = profile_df.iloc[0]
 
     st.sidebar.success(
-        f"👋 Welcome, {str(profile['Name']).title()}!"
+        f"👋 Welcome, {profile['Name']}!"
     )
 
 else:
@@ -55,15 +64,7 @@ st.sidebar.caption(
     "Empowering Preventive Healthcare Through AI"
 )
 
-if use_profile and profile_df.empty:
-
-    st.warning(
-        "No profile found. Please create a profile on the Home page first."
-    )
-
-    use_profile = False
-
-if use_profile:
+if current_email and not profile_df.empty:
 
     profile = profile_df.iloc[0]
 
@@ -93,6 +94,8 @@ if use_profile:
         profile["Weight"]
     )
 
+    profile_exists = True
+
 else:
 
     default_gender = "Select"
@@ -102,6 +105,8 @@ else:
     default_height = 170.0
 
     default_weight = 70.0
+
+    profile_exists = False
 
 
 gender_options = [
@@ -117,7 +122,7 @@ gender = st.selectbox(
     index=gender_options.index(
         default_gender
     ),
-    disabled=use_profile
+    disabled=False
 )
 
 
@@ -126,7 +131,7 @@ age = st.number_input(
     min_value=1,
     max_value=120,
     value=default_age,
-    disabled=use_profile
+    disabled=False
 )
 
 height = st.number_input(
@@ -134,7 +139,7 @@ height = st.number_input(
     min_value=50.0,
     max_value=250.0,
     value=default_height,
-    disabled=use_profile
+    disabled=False
 )
 
 weight = st.number_input(
@@ -142,7 +147,7 @@ weight = st.number_input(
     min_value=10.0,
     max_value=300.0,
     value=default_weight,
-    disabled=use_profile
+    disabled=False
 )
 
 # --------------------------------------------------
@@ -316,7 +321,7 @@ if st.button("Calculate BMI"):
 
 st.divider()
 
-if use_profile:
+if profile_exists:
     st.header("🎯 Health Goal")
     GOALS_FILE = "data/bmi_goals.csv"
     PROGRESS_FILE = "data/bmi_progress.csv"
@@ -332,13 +337,25 @@ if use_profile:
     except:
         goals_df = pd.DataFrame()
 
+    
+    if current_email and not goals_df.empty:
+
+        goals_df = goals_df[
+            goals_df["Email"]
+            ==
+            current_email
+        ]
+
     active_goal_exists = False
 
     if not goals_df.empty:
 
         active_goal_exists = (
-            goals_df["Status"] == "Active"
+            goals_df["Status"]
+            ==
+            "Active"
         ).any()
+
 
     # --------------------------------------------------
     # CREATE GOAL
@@ -403,20 +420,29 @@ if use_profile:
             if st.button(
                 "🎯 Create Goal"
             ):
+                try:
 
-                if goals_df.empty:
+                    all_goals = pd.read_csv(
+                        GOALS_FILE
+                    )
+
+                except:
+
+                    all_goals = pd.DataFrame()
+
+                if all_goals.empty:
 
                     goal_id = 1
 
                 else:
 
-                    goal_id = (
-                        goals_df["GoalID"].max()
-                        + 1
-                    )
+                    goal_id = int(
+                        all_goals["GoalID"].max()
+                    ) + 1
 
                 new_goal = pd.DataFrame(
                     [[
+                        current_email,
                         goal_id,
                         date.today(),
                         start_date,
@@ -426,6 +452,7 @@ if use_profile:
                         "Active"
                     ]],
                     columns=[
+                        "Email",
                         "GoalID",
                         "CreatedDate",
                         "StartDate",
@@ -439,7 +466,7 @@ if use_profile:
                 new_goal.to_csv(
                     GOALS_FILE,
                     mode="a",
-                    header=False,
+                    header=not pd.io.common.file_exists(GOALS_FILE),
                     index=False
                 )
 
@@ -462,6 +489,14 @@ if use_profile:
     )
     except:
         goals_df = pd.DataFrame()
+    
+    if current_email and not goals_df.empty:
+
+        goals_df = goals_df[
+            goals_df["Email"]
+            ==
+            current_email
+        ]
 
     try:
         progress_df = pd.read_csv(
@@ -470,6 +505,7 @@ if use_profile:
     except:
         progress_df = pd.DataFrame(
             columns=[
+                "Email",
                 "GoalID",
                 "Date",
                 "Weight"
@@ -515,7 +551,9 @@ if use_profile:
         )
 
         goal_progress = progress_df[
-            progress_df["GoalID"] == goal_id
+            (progress_df["GoalID"] == goal_id)
+            &
+            (progress_df["Email"] == current_email)
         ]
 
         # ----------------------------------------------
@@ -554,6 +592,7 @@ if use_profile:
 
             new_progress = pd.DataFrame(
                 [[
+                    current_email,
                     goal_id,
                     datetime.now().strftime(
                         "%Y-%m-%d"
@@ -561,6 +600,7 @@ if use_profile:
                     updated_weight
                 ]],
                 columns=[
+                    "Email",
                     "GoalID",
                     "Date",
                     "Weight"
@@ -578,16 +618,18 @@ if use_profile:
             # UPDATE PROFILE WEIGHT
             # ----------------------------------------------
 
-            profile_df = pd.read_csv(
+            all_profiles = pd.read_csv(
                 PROFILE_FILE
             )
 
-            profile_df.loc[
-                0,
+            all_profiles.loc[
+                all_profiles["Email"]
+                ==
+                current_email,
                 "Weight"
             ] = updated_weight
 
-            profile_df.to_csv(
+            all_profiles.to_csv(
                 PROFILE_FILE,
                 index=False
             )
@@ -795,13 +837,43 @@ if use_profile:
 
         if goal_completed:
 
+            try:
+
+                rewards_df = pd.read_csv(
+                    "data/rewards.csv"
+                )
+
+            except:
+
+                rewards_df = pd.DataFrame()
+
+            already_rewarded = False
+
+            if not rewards_df.empty:
+
+                already_rewarded = (
+                    (
+                        rewards_df["Email"]
+                        ==
+                        current_email
+                    )
+                    &
+                    (
+                        rewards_df["Activity"]
+                        ==
+                        "BMI Goal Completed"
+                    )
+                ).any()
+
             st.success(
                 "🏆 Goal Achieved!"
             )
 
-            st.success(
-                "🎁 Reward Granted: +100 Points added to your account!"
-            )
+            if not already_rewarded:
+
+                st.success(
+                    "🎁 Reward Granted: +100 Points added to your account!"
+                )
             
 
             if days_remaining > 0:
@@ -810,36 +882,44 @@ if use_profile:
                     "🟢 Achieved Ahead of Schedule"
                 )
 
-            goals_df.loc[
-                goals_df["GoalID"] == goal_id,
+            all_goals = pd.read_csv(
+                GOALS_FILE
+            )
+
+            all_goals.loc[
+                (all_goals["GoalID"] == goal_id)
+                &
+                (all_goals["Email"] == current_email),
                 "Status"
             ] = "Completed"
 
             # ----------------------------------------------
             # BMI REWARD
             # ----------------------------------------------
+            if not already_rewarded:
+                reward_entry = pd.DataFrame(
+                    [[
+                        current_email,
+                        datetime.now().strftime("%Y-%m-%d"),
+                        "BMI Goal Completed",
+                        100
+                    ]],
+                    columns=[
+                        "Email",
+                        "Date",
+                        "Activity",
+                        "Points"
+                    ]
+                )
 
-            reward_entry = pd.DataFrame(
-                [[
-                    datetime.now().strftime("%Y-%m-%d"),
-                    "BMI Goal Completed",
-                    100
-                ]],
-                columns=[
-                    "Date",
-                    "Activity",
-                    "Points"
-                ]
-            )
+                reward_entry.to_csv(
+                    "data/rewards.csv",
+                    mode="a",
+                    header=False,
+                    index=False
+                )
 
-            reward_entry.to_csv(
-                "data/rewards.csv",
-                mode="a",
-                header=False,
-                index=False
-            )
-
-            goals_df.to_csv(
+            all_goals.to_csv(
                 GOALS_FILE,
                 index=False
             )

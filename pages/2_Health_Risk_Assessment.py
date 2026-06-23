@@ -8,10 +8,6 @@ st.write(
     "Answer a few questions to receive health risk insights and recommended screenings."
 )
 
-use_profile = st.checkbox(
-    "Use My Profile Information",
-    value=True
-)
 
 # Basic Information
 
@@ -26,13 +22,25 @@ try:
 except:
     profile_df = pd.DataFrame()
 
+current_email = st.session_state.get(
+    "email"
+)
+
+if current_email and not profile_df.empty:
+
+    profile_df = profile_df[
+        profile_df["Email"]
+        ==
+        current_email
+    ]
+
 # Sidebar
 
 st.sidebar.title(
     "🏥 HealthGuard AI"
 )
 
-if not profile_df.empty:
+if current_email and not profile_df.empty:
 
     profile = profile_df.iloc[0]
 
@@ -52,15 +60,7 @@ st.sidebar.caption(
     "Empowering Preventive Healthcare Through AI"
 )
 
-if use_profile and profile_df.empty:
-
-    st.warning(
-        "No profile found.Please Fill the following information to get personalized health risk assessment."
-    )
-
-    use_profile = False
-
-if use_profile:
+if current_email and not profile_df.empty:
 
     profile = profile_df.iloc[0]
 
@@ -113,7 +113,7 @@ gender = st.selectbox(
     index=gender_options.index(
         default_gender
     ),
-    disabled=use_profile
+    disabled=False
 )
 
 
@@ -122,7 +122,7 @@ age = st.number_input(
     min_value=1,
     max_value=120,
     value=default_age,
-    disabled=use_profile
+    disabled=False
 )
 
 height = st.number_input(
@@ -130,7 +130,7 @@ height = st.number_input(
     min_value=50.0,
     max_value=250.0,
     value=default_height,
-    disabled=use_profile
+    disabled=False
 )
 
 weight = st.number_input(
@@ -138,7 +138,7 @@ weight = st.number_input(
     min_value=10.0,
     max_value=300.0,
     value=default_weight,
-    disabled=use_profile
+    disabled=False
 )
     
 # Symptoms
