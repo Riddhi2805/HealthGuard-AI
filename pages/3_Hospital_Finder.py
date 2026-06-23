@@ -83,7 +83,7 @@ if st.button("Find Hospitals"):
         }
 
         headers = {
-            "User-Agent": "HealthGuardAI"
+            "User-Agent": "HealthGuardAI/1.0"
         }
 
         response = requests.get(
@@ -120,7 +120,7 @@ if st.button("Find Hospitals"):
             )
         
             st.stop()
-    if data:
+        if data:
 
             st.success(
                 f"Found {len(data)} results"
