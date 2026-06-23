@@ -60,7 +60,7 @@ location = st.text_input(
     placeholder="Airoli, Navi Mumbai"
 )
 st.caption(
-    "Tip: Use area and city together, e.g., Dadar Mumbai, Airoli Navi Mumbai, Thane Mumbai."
+    "Tip: Use area and city together, e.g., Dadar,Mumbai/Airoli Navi,Mumbai/Thane,Mumbai."
 )
 if st.button("Find Hospitals"):
 
@@ -83,7 +83,7 @@ if st.button("Find Hospitals"):
         }
 
         headers = {
-            "User-Agent": "HealthGuardAI"
+            "User-Agent": "HealthGuardAI/1.0"
         }
 
         response = requests.get(
@@ -93,18 +93,33 @@ if st.button("Find Hospitals"):
             timeout=10
         )
 
-        try:
+        if response.status_code == 429:
 
-            data = response.json()
-
-        except:
-
-            st.error(
-                "Unable to fetch hospital data. Please try again."
+            st.warning(
+                "Hospital search service is currently busy. Please try again later."
             )
-
+        
             st.stop()
-
+        
+        elif response.status_code != 200:
+        
+            st.error(
+                "Unable to fetch hospital data."
+            )
+        
+            st.stop()
+        
+        try:
+        
+            data = response.json()
+        
+        except:
+        
+            st.error(
+                "Unable to process hospital data."
+            )
+        
+            st.stop()
         if data:
 
             st.success(

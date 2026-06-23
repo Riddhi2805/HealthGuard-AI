@@ -2,239 +2,200 @@
 
 ## Overview
 
-HealthGuard AI is an AI-powered preventive healthcare web application developed using Streamlit, Python, and Google Gemini AI. The project was inspired by and built as an extension of my earlier Aavishkar Preventive Healthcare research project, which explored the impact of healthcare costs and awareness on participation in preventive health check-ups.
+HealthGuard AI is an AI-powered preventive healthcare web application developed using Python, Streamlit, and Google Gemini AI. The project was inspired by my Aavishkar Preventive Healthcare research study, which examined the impact of healthcare costs and awareness on participation in preventive health check-ups.
 
-The project aims to encourage preventive healthcare by helping users track health goals, assess potential health risks, compare healthcare costs, manage reminders, earn rewards for healthy behavior, and analyze medical reports using artificial intelligence.
+The application transforms research findings into a practical healthcare solution by combining health analytics, preventive healthcare management, cost comparison, personalized tracking, and AI-powered health assistance.
 
-The application transforms research insights into a practical healthcare solution by combining health analytics, personalized tracking, healthcare cost comparison, preventive care management, and AI-powered health assistance.
-
----
-
-## Project Evolution
-
-### Phase 1: Aavishkar Preventive Healthcare Research
-
-- Conducted a survey-based study on preventive healthcare participation.
-- Analyzed the influence of healthcare costs and awareness on preventive check-ups.
-- Applied statistical techniques to identify barriers and trends.
-- Proposed technology-driven solutions to improve preventive healthcare adoption.
-
-### Phase 2: HealthGuard AI
-
-- Converted research findings into a functional healthcare application.
-- Added BMI and weight goal tracking.
-- Implemented health risk assessment tools.
-- Developed healthcare cost comparison features.
-- Added reminders and reward-based engagement.
-- Integrated Google Gemini AI for medical report analysis.
-- Built an interactive web application using Streamlit.
+Users can assess health risks, monitor BMI and weight goals, compare healthcare costs, manage reminders, earn rewards for healthy habits, discover nearby hospitals, and analyze medical reports using artificial intelligence.
 
 ---
+
+## Project Status
+
+HealthGuard AI is a portfolio and academic project developed to demonstrate the application of Data Analytics, Artificial Intelligence, and Preventive Healthcare concepts in a real-world setting.
+
+The application has been deployed as a functional Streamlit web application and integrates Google Gemini AI for automated medical report analysis.
+
+Current data storage uses CSV-based persistence for demonstration and educational purposes.
 
 ## Key Features
 
 ### 👤 User Profile Management
 
-* Create and manage a personal health profile
+* Create and manage personal health profiles
 * Store age, gender, height, and weight information
-* Automatically personalize health-related modules
+* Personalize healthcare modules automatically
 
 ### ⚖️ Weight Goal & BMI Tracking
 
-* Calculate BMI using profile information
-* Set weight gain or weight loss goals
-* Track progress over time
-* Visualize weight trends through charts
-* Earn reward points for completing goals
+* BMI calculation and classification
+* Weight gain and weight loss goal tracking
+* Progress visualization through charts
+* Reward points for goal completion
 
 ### 🩺 Health Risk Assessment
 
-* Assess potential health risks based on:
-
-  * Symptoms
-  * Lifestyle habits
-  * Age
-  * BMI
-* Receive personalized health insights
-* Get recommended medical tests and preventive screenings
+* Symptom-based health risk screening
+* Lifestyle and BMI-based risk analysis
+* Personalized health insights
+* Recommended tests and preventive screenings
 
 ### 🏥 Hospital Finder
 
-* Search hospitals near a specified location
-* View hospital information
-* Open locations directly in Google Maps
+* Search hospitals by location
+* View hospital details
+* Direct Google Maps integration
 
 ### 💰 Healthcare Cost Checker
 
-* Compare medical test costs across providers
-* Evaluate whether quoted prices are reasonable
-* Identify cost-saving opportunities
-* View market price comparisons and analytics
+* Compare healthcare costs across providers
+* Evaluate quoted prices against market averages
+* Identify potential cost savings
+* Visualize provider-wise price comparisons
 
 ### 🔔 Health Reminders
 
-* Create reminders for:
-
-  * Health checkups
-  * Screenings
-  * Vaccinations
-  * Medical tests
+* Create reminders for tests, screenings, vaccinations, and checkups
 * Track reminder completion status
-* Earn reward points for completed reminders
+* Automatic reminder management
 
 ### 🏆 Reward System
 
-* Earn points for maintaining healthy habits
-* Track completed activities
-* Unlock achievement badges:
-
-  * Bronze Health Explorer
-  * Silver Health Champion
-  * Gold Wellness Master
-  * Platinum Health Legend
+* Earn points for healthy activities
+* View reward history and analytics
+* Unlock achievement badges
 
 ### 🤖 AI Medical Report Analyzer
 
 * Upload medical reports in PDF format
-* Extract report contents automatically
-* Generate:
-
-  * Simple summaries
-  * Key findings
-  * Potential health concerns
-  * Recommended follow-up tests
-  * Lifestyle suggestions
-* Powered by Google Gemini AI
-
----
-
-## Why Some Features Require a User Profile
-
-Certain modules require a user profile because they depend on personal health information to generate meaningful and accurate results.
-
-### Pages Requiring a Profile
-
-#### Weight Goal Tracker
-
-Requires current weight, height, and BMI information to:
-
-* Calculate BMI
-* Create realistic goals
-* Monitor progress accurately
-
-#### Health Reminders
-
-Reminders are linked to a specific user’s health journey and reward system. Allowing multiple anonymous users could create inconsistencies in reminder tracking and reward allocation.
-
-#### Reward Points
-
-Reward points are earned through personal health activities such as completing goals and reminders. These rewards must remain associated with the correct user profile.
-
-### Pages That Do Not Require a Profile
-
-The following pages remain accessible without creating a profile:
-
-* Health Risk Assessment
-* Hospital Finder
-* Healthcare Cost Checker
-* AI Medical Report Analyzer
-
-These modules can provide value without requiring personal data storage.
+* Extract report content automatically
+* Generate AI-powered summaries and insights
+* Suggest follow-up tests and lifestyle recommendations
 
 ---
 
 ## Technology Stack
 
-### Technologies Used
+### Languages & Tools
 
-- Python
-- Streamlit
-- Pandas
-- Requests
-- PDFPlumber
-- Google Generative AI SDK
-- Google Gemini 2.5 Flash
-
-### Libraries
-
+* Python
+* Streamlit
 * Pandas
 * Requests
 * PDFPlumber
-* Google Generative AI SDK
+* Git & GitHub
 
-### AI Integration
+### AI & APIs
 
 * Google Gemini 2.5 Flash
+* OpenStreetMap Nominatim API
+
+### Data Handling
+
+* CSV-based storage
+* Pandas DataFrames
+
+## Skills Demonstrated
+
+* Data Analysis
+* Data Visualization
+* Python Programming
+* Streamlit Web Development
+* API Integration
+* Artificial Intelligence Integration
+* Prompt Engineering
+* Healthcare Analytics
+* User Authentication Logic
+* Dashboard Development
+* Git & GitHub Version Control
+
+---
+
+## Project Impact
+
+* Developed a multi-page preventive healthcare application integrating analytics, AI, and healthcare management tools.
+* Built modules for health tracking, reminders, rewards, hospital discovery, and healthcare cost comparison.
+* Integrated Google Gemini AI to generate summaries and insights from uploaded medical reports.
+* Converted findings from an academic healthcare research project into a functional software solution.
+* Applied data analysis, visualization, and AI-powered decision support in a healthcare use case.
 
 ---
 
 ## Project Screenshots
 
+### 🔐 Login & Registration
+
+![Login Page](assets/Login_pg.png)
+
 ### 🏠 Home Page
 
-![Home Page](assets/home.png)
-
----
+![Home Page](assets/Home_0.png)
 
 ### ⚖️ Weight Goal Tracker
 
 ![Weight Goal Tracker](assets/page_1.png)
 
----
-
 ### 🩺 Health Risk Assessment
 
 ![Health Risk Assessment](assets/page_2.png)
-
----
 
 ### 🏥 Hospital Finder
 
 ![Hospital Finder](assets/page_3.png)
 
----
-
 ### 💰 Healthcare Cost Checker
 
 ![Healthcare Cost Checker](assets/page_4.png)
-
----
 
 ### 🔔 Health Reminders
 
 ![Health Reminders](assets/page_5.png)
 
----
-
 ### 🏆 Reward Points
 
 ![Reward Points](assets/page_6.png)
-
----
 
 ### 🤖 AI Medical Report Analyzer
 
 ![AI Medical Report Analyzer](assets/page_7.png)
 
----
-
-## Related Project
-
-This application is an extension of my earlier research project:
-
-🔗 Aavishkar Preventive Healthcare Research Project
-
-The original research investigated preventive healthcare participation, healthcare affordability, and awareness-related barriers. HealthGuard AI extends these findings by transforming proposed solutions into an interactive healthcare application.
-
---- 
-
 ## Live Demo
 
-[Streamlit App Link](https://healthguard-ai-uaewfkm8qytchzjrwy5wwc.streamlit.app/)
+HealthGuard AI is deployed on Streamlit Cloud:
 
-The application can also be run locally using:
+https://healthguard-ai-nmo5tvzdpjqu4e8buj5f8s.streamlit.app/
 
-streamlit run Home.py
+---
+
+## Run Locally
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Riddhi2805/HealthGuard-AI.git
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the application:
+
+```bash
+streamlit run Login.py
+```
+
+---
+
+## Related Research
+
+This project extends my earlier Aavishkar Preventive Healthcare research study, which investigated healthcare affordability, awareness, and participation in preventive health check-ups.
+
+HealthGuard AI converts those research findings into a practical healthcare analytics and AI-driven application.
+
+---
 
 ## Disclaimer
 
@@ -247,5 +208,4 @@ The AI-generated insights and recommendations provided by this application shoul
 ## Author
 
 **Riddhi Kore**
-
 
