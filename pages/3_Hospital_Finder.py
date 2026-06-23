@@ -93,31 +93,34 @@ if st.button("Find Hospitals"):
             timeout=10
         )
 
-        try:
-        
-            st.write(
-                "Status Code:",
-                response.status_code
-            )
-        
-            st.write(
-                "Response Preview:"
-            )
-        
-            st.text(
-                response.text[:500]
-            )
-        
-            data = response.json()
-        
-        except Exception as e:
-        
-            st.error(
-                f"Error: {e}"
+        if response.status_code == 429:
+
+            st.warning(
+                "Hospital search service is currently busy. Please try again later."
             )
         
             st.stop()
-        if data:
+        
+        elif response.status_code != 200:
+        
+            st.error(
+                "Unable to fetch hospital data."
+            )
+        
+            st.stop()
+        
+        try:
+        
+            data = response.json()
+        
+        except:
+        
+            st.error(
+                "Unable to process hospital data."
+            )
+        
+            st.stop()
+    if data:
 
             st.success(
                 f"Found {len(data)} results"
