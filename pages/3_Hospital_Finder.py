@@ -94,17 +94,29 @@ if st.button("Find Hospitals"):
         )
 
         try:
-
-            data = response.json()
-
-        except:
-
-            st.error(
-                "Unable to fetch hospital data. Please try again."
+        
+            st.write(
+                "Status Code:",
+                response.status_code
             )
-
+        
+            st.write(
+                "Response Preview:"
+            )
+        
+            st.text(
+                response.text[:500]
+            )
+        
+            data = response.json()
+        
+        except Exception as e:
+        
+            st.error(
+                f"Error: {e}"
+            )
+        
             st.stop()
-
         if data:
 
             st.success(
